@@ -27,7 +27,6 @@ export default function App() {
             <>
               <Link to="/" onClick={() => setMenuOpen(false)}>Landing</Link>
               <Link to="/planning" onClick={() => setMenuOpen(false)}>Planning</Link>
-              <Link to="/workout" onClick={() => setMenuOpen(false)}>Workout</Link>
               <Link to="/history" onClick={() => setMenuOpen(false)}>History</Link>
             </>
           )}
