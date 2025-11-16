@@ -4,7 +4,7 @@ body, html, #root, .app {
   padding: 0;
   height: 100%;
   font-family: sans-serif;
-  overflow-x: hidden; /* remove horizontal scroll */
+  overflow-x: hidden;
 }
 
 /* Toolbar stays fixed */
@@ -25,11 +25,34 @@ body, html, #root, .app {
 .hamburger {
   position: absolute;
   left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 24px;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
+}
+
+/* Start button */
+.start-btn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  color: purple;
+  border: 2px solid purple;
+  padding: 5px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.start-btn:hover {
+  background: purple;
+  color: white;
 }
 
 /* Side menu */
@@ -42,7 +65,7 @@ body, html, #root, .app {
   background-color: #eee;
   display: flex;
   flex-direction: column;
-  padding-top: 60px; /* toolbar space */
+  padding-top: 60px;
   transition: left 0.3s ease;
   z-index: 999;
 }
@@ -71,26 +94,16 @@ body, html, #root, .app {
 
 /* Page content */
 .page-content {
-  margin-top: 60px; /* space for toolbar */
+  margin-top: 60px;
   padding: 0;
-  min-height: calc(100vh - 60px); /* full viewport minus toolbar */
+  min-height: calc(100vh - 60px);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* prevent scroll */
+  overflow: hidden;
   flex-direction: column;
 }
 
-/* Landing page */
-.landing-content {
-  text-align: center;
-  color: purple;
-  font-size: 24px;
-}
-
-/* Other pages */
-.page-inner {
-  color: purple;
-  font-size: 20px;
-  text-align: center;
-}
+/* Pages */
+.landing-content { text-align: center; color: purple; font-size: 24px; }
+.page-inner { color: purple; font-size: 20px; text-align: center; }
