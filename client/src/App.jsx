@@ -1,6 +1,6 @@
 // src/App.jsx
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import Landing from "./Pages/Landing";
 import Planning from "./Pages/Planning";
 import Workout from "./Pages/Workout";
@@ -37,6 +37,5 @@ function App() {
         </Routes>
       </div>
     </Router>
-  )
-}
-
+  );
+}export default App;
