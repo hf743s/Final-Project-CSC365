@@ -1,6 +1,6 @@
 // src/App.jsx
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Landing from "./Pages/Landing";
 import Planning from "./Pages/Planning";
 import Workout from "./Pages/Workout";
@@ -8,10 +8,19 @@ import History from "./Pages/History";
 import "./index.css";
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  }
 
   return (
     <Router>
+      {/* Hamburger Menu Icon */}
+      <button className="hamburger-menu" onClick={toggleMenu}>
+        &#9776;
+      </button>
+
         {/* Side menu */}
       <div className={`side-menu ${menuOpen ? "open" : ""}`}>
         {menuOpen && (
@@ -34,8 +43,11 @@ function App() {
           <Route path="/planning" element={<Planning />} />
           <Route path="/workout" element={<Workout />} />
           <Route path="/history" element={<History />} />
+          <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>
     </Router>
   );
+
+
 }export default App;
