@@ -11,7 +11,7 @@ export default function History() {
     }
   }, []);
 
-  
+
   return (
     <div className="page-inner">
       <h2>History Page</h2>
