@@ -1,5 +1,5 @@
 // src/Pages/History.jsx
-import { useEffec, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function History() {
   const [history, setHistory] = useState([]);
@@ -14,8 +14,19 @@ export default function History() {
 
   return (
     <div className="page-inner">
-      <h2>History Page</h2>
-      <p>View your workout history here.</p>
+      <h2>Workout History</h2>
+      {history.length === 0 ? (
+        <p>No workouts logged yet.</p>
+      ) : (
+        <ul>
+          {history.map((entry, idx) => (
+            <li key={idx}>
+              <strong>{entry.date}</strong>: {entry.workoutName} -{" "}
+              {entry.exercises.map((ex) => ex.name).join(", ")}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
