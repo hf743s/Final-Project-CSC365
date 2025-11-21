@@ -9,7 +9,13 @@ export default function Workout() {
   const navigate = useNavigate();
 
   const [workout,setWorkout] = useState(null);
+  const [exerciseIndex, setExerciseIndex] = useState(0);
+  const [setIndex, setSetIndex] = useState(0);
+  const [timer, setTimer] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
   const [exerciseLogs, setExerciseLogs] = useState([]);
+
 
 
   // Load workout from planning
@@ -17,26 +23,73 @@ export default function Workout() {
     if (location.state?.workout) {
       setWorkout(location.state.workout);
 
-      const initialLogs = location.state.workout.exercises.map(ex => ({weights: Array(ex.sets).fill(""),}))
+      const initialLogs = location.state.workout.exercises.map((ex) => ({weights: Array(ex.sets).fill(""), reps: Array(ex.sets).fill(""),}))
       setExerciseLogs(initialLogs);
 
-    }else {
+    } else {
       navigate("/planning");
     }
   }, []);
 
+  // Timer
+  useEffect(() => {
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        setTimer((t) => t + 1)
+      }, 1000)
 
-  //Changing weight
-  const handWeightChange = (exIdx, setIdx, value) => {
-    const updatedLogs = [...exerciseLogs];
-    updatedLogs[exIdx].weights[setIdx] = value;
-    setExerciseLogs(updatedLogs);
-  };
+      return () => clearInterval(interval)
+    }
+  }, [isPaused])
+
+  if (!workout) return <div>Loading Workout...</div>
 
 
-  //Finish workout and save to history
+//Workout Session
+  const currentExercise = workout.exercises[exerciseIndex]
+
+  const handleWeightChange = (value) => {
+    const updated = [...exerciseLogs]
+    updated[exerciseIndex].weights[setIndex] = value;
+    setExerciseLogs(updated)
+  }
+
+  const handleRepsChange = (value) => {
+    const updated = [...exerciseLogs]
+    updated[exerciseIndex].reps[setIndex] = value;
+    setExerciseLogs(updated)
+  }
+
+  const nextSet = () => {
+    if (setIndex < currentExercise.sets - 1) {
+      setSetIndex(setIndex + 1)
+
+    } else if (exerciseIndex < workout.exercises.length - 1) {
+      setExerciseIndex(exerciseIndex + 1)
+      setSetIndex(0)
+
+    } else {
+      finishWorkout();
+    }
+  }
+
+  const prevSet = () => {
+    if (setIndex > 0) {
+      setSetIndex(setIndex - 1)
+
+    }else if (exerciseIndex > 0) {
+      const prevExercise = workout.exercises[exerciseIndex - 1]
+      setExerciseIndex(exerciseIndex - 1)
+      setSetIndex(prevExercise.sets - 1)
+    }
+  }
+
+  const skipSet = () => {
+    nextSet()
+  }
+
   const finishWorkout = () => {
-    const history = JSON.parse(localStorage.getItem("history") || "[]");
+    const history = JSON.parse(localStorage.getItem("history") || "[]")
     history.push({
       name: workout.name,
       date: new Date().toLocaleString(),
@@ -45,39 +98,74 @@ export default function Workout() {
         sets: ex.sets,
         reps: ex.reps,
         weights: exerciseLogs[idx].weights,
-      }))
+        actualReps: exerciseLogs[idx].reps,
+      })),
     });
-    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem("history", JSON.stringify(history))
     navigate("/history")
   }
 
-  if (!workout) return <div>Loading workout...</div>
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60).toString().padStart(2, "0")
+    const s = (sec % 60).toString().padStart(2, "0")
+    return `${m}:${s}`
+  }
+
 
 
   return (
-    <div className="workout-container">
-      <h2>{workout.name}</h2>
-      
-      {workout.exercises.map((ex, exIdx) => (
-        <div key={exIdx} className="exercise-block">
-          <h3>{ex.name}</h3>
-          {Array.from({ length: ex.sets }).map((_, setIdx) => (
-            <div key={setIdx} className="set-block">
-              <label>Set {setIdx + 1}:</label>
-              <input type="number"
-                min={0}
-                placeholder="Weight"
-                value={exerciseLogs[exIdx]?.weights[setIdx] ?? ""}
-                onChange={(e) => handleWeightChange(exIdx, setIdx, e.target.value)
-                }
-              />
-              <span>Reps: {ex.reps}</span>
-            </div>
-          ))}
-        </div>
-      ))}
+    <div className="active-workout-container">
+      {/*Top Buttons*/}
+      <div className="top-buttons">
+        <button onClick={() => setIsPaused(!isPaused)}>{isPaused ? "Resume" : "Pause"}</button>
+        
+        <button onClick={skipSet}>Skip</button>
 
-      <button className="finish-btn" onClick={finishWorkout}> Finish Workout</button>
+        <button className="end-btn" onClick={finishWorkout}>End</button>
+      </div>
+      
+      {/*Timer*/}
+      <div className="timer">{formatTime(timer)}</div>
+
+      {/*Current Exercise Info*/}
+      <div className="exercise-info">
+        <h2>{currentExercise.name}</h2>
+        <h3>Set {setIndex + 1} of {currentExercise.sets}</h3>
+      </div>
+
+      {/*Inputs*/}
+      <div className="inputs-container">
+        <div className="planned">
+          <div>Planned Weight: {currentExercise.weights[setIndex]}</div>
+          <div>
+            Actual Weight:{" "}
+            <input
+              type="number"
+              min={0}
+              value={exerciseLogs[exerciseIndex]?.weights[setIndex] || ""}
+              onChange={(e) => handleWeightChange(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="planned">
+        <div>Planned Reps: {currentExercise.reps}</div>
+        <div>
+          Actual Reps:{" "}
+          <input
+            type="number"
+            min={0}
+            value={exerciseLogs[exerciseIndex]?.reps[setIndex] || ""}
+            onChange={(e) => handleRepsChange(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/*Bottom Buttons*/}
+      <div className="bottom-buttons">
+        <button onClick={prevSet} disabled={exerciseIndex === 0 && setIndex === 0}>back</button>
+        <button onClick={nextSet}>Next</button>
+      </div>
     </div>
   );
 }
