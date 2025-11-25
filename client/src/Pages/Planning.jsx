@@ -21,17 +21,28 @@ export default function Planning() {
 
   const navigate = useNavigate();
 
-  // Load workouts from localStorage
+  // Load workouts from localStorage (planned + history)
   useEffect(() => {
-    const savedWorkouts = localStorage.getItem("workouts");
-    if (savedWorkouts) {
-      setWorkouts(JSON.parse(savedWorkouts));
+    const savedPlanned = localStorage.getItem("workouts");
+    let plannedWorkouts = savedPlanned ? JSON.parse(savedPlanned) : [];
+
+    const savedHistory = localStorage.getItem("workoutHistory"); // adjust key if different
+    let historyWorkouts = savedHistory ? JSON.parse(savedHistory) : [];
+
+    // Combine planned workouts and history for redo functionality
+    const combinedWorkouts = [...plannedWorkouts, ...historyWorkouts];
+
+    setWorkouts(combinedWorkouts);
+
+    if (combinedWorkouts.length > 0) {
+      setSelectedWorkoutIndex(0);
     }
   }, []);
 
-  // Save workouts to localStorage whenever they change
+  // Save only planned workouts (not history) to localStorage
   useEffect(() => {
-    localStorage.setItem("workouts", JSON.stringify(workouts));
+    const planned = workouts.filter(w => !w.completed); // mark history items with `completed: true`
+    localStorage.setItem("workouts", JSON.stringify(planned));
   }, [workouts]);
 
   const selectedWorkout =
@@ -41,9 +52,11 @@ export default function Planning() {
 
   const handleAddWorkout = () => {
     if (!newWorkoutName.trim()) return;
-    setWorkouts([...workouts, { name: newWorkoutName, exercises: [] }]);
+    const newWorkout = { name: newWorkoutName, exercises: [] };
+    setWorkouts([...workouts, newWorkout]);
     setNewWorkoutName("");
     setShowWorkoutPopup(false);
+    setSelectedWorkoutIndex(workouts.length); // select new workout
   };
 
   const handleAddExercise = () => {
@@ -74,8 +87,6 @@ export default function Planning() {
       repsInput: "",
     });
     setShowExercisePopup(false);
-    // Keep selection after adding exercise
-    setSelectedWorkoutIndex(selectedWorkoutIndex);
   };
 
   const handleWeightChange = (index, value) => {
@@ -108,6 +119,18 @@ export default function Planning() {
 
   const handleStartWorkout = () => {
     if (!selectedWorkout || selectedWorkout.exercises.length === 0) return;
+
+    // Optionally mark workout as completed if storing in history
+    const updatedWorkouts = [...workouts];
+    updatedWorkouts[selectedWorkoutIndex] = { ...selectedWorkout, completed: true };
+    setWorkouts(updatedWorkouts);
+
+    // Save to workoutHistory
+    const savedHistory = localStorage.getItem("workoutHistory");
+    const history = savedHistory ? JSON.parse(savedHistory) : [];
+    history.push(updatedWorkouts[selectedWorkoutIndex]);
+    localStorage.setItem("workoutHistory", JSON.stringify(history));
+
     navigate("/workout", { state: { workout: selectedWorkout } });
   };
 
@@ -134,9 +157,7 @@ export default function Planning() {
         {workouts.map((w, idx) => (
           <div
             key={idx}
-            className={`exercise-item workout-item ${
-              selectedWorkoutIndex === idx ? "selected" : ""
-            }`}
+            className={`exercise-item workout-item ${selectedWorkoutIndex === idx ? "selected" : ""}`}
             onClick={() => setSelectedWorkoutIndex(idx)}
           >
             {w.name}

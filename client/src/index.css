@@ -7,7 +7,7 @@ body, html, #root, .app {
   overflow-x: hidden;
 }
 
-/* Toolbar stays fixed */
+/* Toolbar */
 .toolbar {
   background-color: purple;
   color: white;
@@ -20,55 +20,40 @@ body, html, #root, .app {
   left: 0;
   right: 0;
   z-index: 1000;
+  padding: 0 20px;
+}
+
+.toolbar h1 {
+  margin: 0;
+  flex: 1;
+  text-align: center;
 }
 
 .hamburger {
-  position: fixed;
+  position: absolute;
   left: 20px;
-  top: 20px;
+  top: 50%;
   transform: translateY(-50%);
-  font-size: 28px;
+  font-size: 24px;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
-  z-index: 1001;
-}
-
-/* Start button */
-.start-btn {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  color: purple;
-  border: 2px solid purple;
-  padding: 5px 12px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-
-.start-btn:hover {
-  background: purple;
-  color: white;
 }
 
 /* Side menu */
 .side-menu {
   position: fixed;
   top: 0;
-  left: -250px;
-  width: 250px;
+  left: -220px;
+  width: 220px;
   height: 100%;
   background-color: #eee;
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 60px; /* space for toolbar */
   transition: left 0.3s ease;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .side-menu.open {
@@ -76,15 +61,10 @@ body, html, #root, .app {
 }
 
 .side-menu a {
-  padding: 15px 20px;
+  padding: 15px;
   text-decoration: none;
   color: black;
   display: block;
-  font-size: 18px;
-}
-
-.side-menu a:hover {
-  background-color: #ddd;
 }
 
 /* Overlay */
@@ -94,13 +74,13 @@ body, html, #root, .app {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 900;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 998;
 }
 
 /* Page content */
 .page-content {
-  margin-top: 60px;
+  margin-top: 60px; /* space for toolbar */
   padding: 0;
   min-height: calc(100vh - 60px);
   display: flex;
@@ -110,6 +90,16 @@ body, html, #root, .app {
   flex-direction: column;
 }
 
-/* Pages */
-.landing-content { text-align: center; color: purple; font-size: 24px; }
-.page-inner { color: purple; font-size: 20px; text-align: center; }
+/* Landing page */
+.landing-content {
+  text-align: center;
+  color: purple;
+  font-size: 24px;
+}
+
+/* Other pages */
+.page-inner {
+  color: purple;
+  font-size: 20px;
+  text-align: center;
+}
