@@ -30,7 +30,7 @@ export default function Planning() {
     let historyWorkouts = savedHistory ? JSON.parse(savedHistory) : [];
 
     // Combine planned workouts and history for redo functionality
-    const combinedWorkouts = [...plannedWorkouts, ...historyWorkouts];
+    const combinedWorkouts = [...historyWorkouts];
 
     setWorkouts(combinedWorkouts);
 

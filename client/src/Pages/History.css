@@ -1,0 +1,44 @@
+.page-inner {
+  padding: 20px;
+  color: purple;
+  font-family: sans-serif;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.history-entry {
+  border: 1px solid purple;
+  border-radius: 5px;
+  padding: 10px;
+  background: #f9f9ff;
+}
+
+.history-entry h3 {
+  margin: 0 0 5px 0;
+}
+
+.history-entry p {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid purple;
+  padding: 5px;
+  font-size: 0.9rem;
+}
+
+.history-table th {
+  background: #e0c3ff;
+}
