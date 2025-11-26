@@ -5,6 +5,8 @@ import "./Planning.css";
 export default function Planning() {
   const [workouts, setWorkouts] = useState([]);
   const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState(null);
+  const [editingWorkoutIndex, setEditingWorkoutIndex] = useState(null);
+  const [editingExerciseIndex, setEditingExerciseIndex] = useState(null);
 
   const [showWorkoutPopup, setShowWorkoutPopup] = useState(false);
   const [showExercisePopup, setShowExercisePopup] = useState(false);
@@ -25,33 +27,38 @@ export default function Planning() {
   useEffect(() => {
     const savedPlanned = localStorage.getItem("workouts");
     let plannedWorkouts = savedPlanned ? JSON.parse(savedPlanned) : [];
+    setWorkouts(plannedWorkouts)
 
-    const savedHistory = localStorage.getItem("workoutHistory"); // adjust key if different
-    let historyWorkouts = savedHistory ? JSON.parse(savedHistory) : [];
-
-    // Combine planned workouts and history for redo functionality
-    const combinedWorkouts = [...plannedWorkouts, ...historyWorkouts];
-
-    setWorkouts(combinedWorkouts);
-
-    if (combinedWorkouts.length > 0) {
-      setSelectedWorkoutIndex(0);
+    if (plannedWorkouts.length > 0) {
+      selectedWorkoutIndex(0)
     }
   }, []);
 
-  // Save only planned workouts (not history) to localStorage
   useEffect(() => {
-    const planned = workouts.filter(w => !w.completed); // mark history items with `completed: true`
-    localStorage.setItem("workouts", JSON.stringify(planned));
+    localStorage.setItem("workouts", JSON.stringify(workouts));
   }, [workouts]);
 
   const selectedWorkout =
-    selectedWorkoutIndex !== null && workouts[selectedWorkoutIndex]
-      ? workouts[selectedWorkoutIndex]
-      : null;
+    selectedWorkoutIndex !== null && workouts[selectedWorkoutIndex] ? workouts[selectedWorkoutIndex] : null;
 
   const handleAddWorkout = () => {
     if (!newWorkoutName.trim()) return;
+
+    //editing workouts
+    if (editingWorkoutIndex !== null) {
+      const updated = [...workouts]
+      updated[editingWorkoutIndex] = {
+        ...updated[editingWorkoutIndex],
+        name: newWorkoutName
+      }
+      setWorkouts(updated)
+      setEditingWorkoutIndex(null)
+      setNewWorkoutName("")
+      setShowWorkoutPopup(false)
+      return;
+    }
+    
+    //creating new workout
     const newWorkout = { name: newWorkoutName, exercises: [] };
     setWorkouts([...workouts, newWorkout]);
     setNewWorkoutName("");
@@ -60,9 +67,9 @@ export default function Planning() {
   };
 
   const handleAddExercise = () => {
-    if (!exerciseForm.name.trim() || !selectedWorkout) return;
+    if (!exerciseForm.name.trim() || !selectedWorkout) return
 
-    const repsValue = parseInt(exerciseForm.reps) || 1;
+    const repsValue = parseInt(exerciseForm.reps) || 1
 
     const exercise = {
       name: exerciseForm.name,
@@ -71,11 +78,15 @@ export default function Planning() {
       weights: exerciseForm.weights.map((w) => parseInt(w) || 0),
     };
 
-    const updatedWorkouts = workouts.map((w, idx) =>
-      idx === selectedWorkoutIndex
-        ? { ...w, exercises: [...w.exercises, exercise] }
-        : w
-    );
+    const updatedWorkouts = [...workouts]
+
+    if(editingExerciseIndex !== null) {
+      updatedWorkouts[selectedWorkoutIndex].exercises[editingExerciseIndex] = exercise
+      setEditingExerciseIndex(null)
+    } else {
+      updatedWorkouts[selectedWorkoutIndex].exercises.push(exercise)
+    }
+
     setWorkouts(updatedWorkouts);
 
     setExerciseForm({
@@ -88,6 +99,45 @@ export default function Planning() {
     });
     setShowExercisePopup(false);
   };
+
+  const handleEditWorkout = (index) => {
+    const workout = workouts[index]
+    setNewWorkoutName(workout.name)
+    setEditingWorkoutIndex(index)
+    setShowWorkoutPopup(true)
+  }
+
+  const handleDeleteWorkout = (index) => {
+    const updated = workouts.filter((_, i) => i !== index)
+    setWorkouts(updated)
+
+    if (updated.length === 0) {
+      setSelectedWorkoutIndex(null)
+    } else if (index === setSelectedWorkoutIndex) {
+      setSelectedWorkoutIndex(0)
+    }
+  }
+
+  const handleEditExercise = (idx) => {
+    const exercise = selectedWorkout.exercises[idx]
+    setExerciseForm({
+      name: exercise.name,
+      sets: exercise.sets,
+      reps: exercise.reps,
+      weights: [...exercise.weights],
+      setsInput: exercise.sets,
+      repsInput: exercise.reps,
+    })
+    setEditingExerciseIndex(idx)
+    setShowExercisePopup(true)
+  }
+
+  const handleDeleteExercise = (idx) => {
+    if (!selectedWorkout) return;
+    const updatedExercises = selectedWorkout.exercises.filter((_, i) => i !== idx)
+    const updatedWorkouts = workouts.map((w, i) => i === selectedWorkoutIndex ? {...w, exercises: updatedExercises } : w)
+    setWorkouts(updatedWorkouts)
+  }
 
   const handleWeightChange = (index, value) => {
     const newWeights = [...exerciseForm.weights];
@@ -154,13 +204,33 @@ export default function Planning() {
             +
           </button>
         </div>
+
         {workouts.map((w, idx) => (
           <div
             key={idx}
             className={`exercise-item workout-item ${selectedWorkoutIndex === idx ? "selected" : ""}`}
-            onClick={() => setSelectedWorkoutIndex(idx)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "10px"
+            }}
           >
-            {w.name}
+            {/*DELETE BUTTON - Workouts*/}
+            <button className="icon-btn delete-btn" 
+            onClick={() => handleDeleteWorkout(idx)}>X</button>
+              
+            {/*Workout Name*/}
+            <span onClick={() => setSelectedWorkoutIndex(idx)}
+              style={{
+                flexGrow: 1,
+                cursor: "pointer"
+              }}
+            >{w.name}</span>
+          
+            {/*EDIT BUTTON - Workouts*/}
+            <button onClick={() => handleEditWorkout(idx)}>✏️</button>
+
           </div>
         ))}
       </div>
@@ -180,8 +250,29 @@ export default function Planning() {
         </div>
         {selectedWorkout &&
           selectedWorkout.exercises.map((ex, idx) => (
-            <div key={idx} className="exercise-item">
-              {ex.name}
+            <div 
+              key={idx} 
+              className="exercise-item"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "10px",
+              }}
+            >
+              {/*DELETE BUTTON - Excercises*/}
+              <button className="icon-btn delete-btn" onClick={() => handleDeleteExercise(idx)}>X</button>
+
+              {/*EXERCISE NAME*/}
+              <span
+                style={{
+                  flexGrow: 1,
+                  cursor: "pointer",
+                }}
+                onClick={() => setSelectedWorkoutIndex(selectedWorkoutIndex)}>{ex.name}</span>
+
+              {/*EDIT BUTTON - Exercises*/}
+              <button className="icon-btn edit-btn" onClick={() => handleEditExercise(idx)}>✏️</button>
             </div>
           ))}
       </div>

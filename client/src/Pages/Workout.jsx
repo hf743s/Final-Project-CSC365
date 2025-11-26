@@ -89,7 +89,7 @@ export default function Workout() {
   }
 
   const finishWorkout = () => {
-    const history = JSON.parse(localStorage.getItem("history") || "[]")
+    const history = JSON.parse(localStorage.getItem("workoutHistory") || "[]")
     history.push({
       name: workout.name,
       date: new Date().toLocaleString(),
@@ -101,7 +101,7 @@ export default function Workout() {
         actualReps: exerciseLogs[idx].reps,
       })),
     });
-    localStorage.setItem("history", JSON.stringify(history))
+    localStorage.setItem("workoutHistory", JSON.stringify(history))
     navigate("/history")
   }
 

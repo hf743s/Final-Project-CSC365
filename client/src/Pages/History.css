@@ -1,0 +1,29 @@
+.workout-names-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.workout-name {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  color: purple;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.workout-name:hover {
+  background-color: #e0c3ff;
+}
+
+.back-btn {
+  margin-bottom: 15px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid purple;
+  background: white;
+  color: purple;
+  border-radius: 5px;
+}
