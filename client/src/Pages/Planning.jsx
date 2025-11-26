@@ -29,8 +29,16 @@ export default function Planning() {
     let plannedWorkouts = savedPlanned ? JSON.parse(savedPlanned) : [];
     setWorkouts(plannedWorkouts)
 
-    if (plannedWorkouts.length > 0) {
-      selectedWorkoutIndex(0)
+    const savedHistory = localStorage.getItem("workoutHistory"); // adjust key if different
+    let historyWorkouts = savedHistory ? JSON.parse(savedHistory) : [];
+
+    // Combine planned workouts and history for redo functionality
+    const combinedWorkouts = [...historyWorkouts];
+
+    setWorkouts(combinedWorkouts);
+
+    if (combinedWorkouts.length > 0) {
+      setSelectedWorkoutIndex(0);
     }
   }, []);
 
