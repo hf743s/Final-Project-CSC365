@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Workout.css";
+import PropTypes from "prop-types"
 
 export default function Workout() {
   const location = useLocation();
@@ -128,7 +129,7 @@ export default function Workout() {
           </div>
         </div>
         <div className="planned">
-          <div>Planned Reps: {currentExercise.reps[setIndex]}</div>
+          <div>Planned Reps: {currentExercise.reps}</div>
           <div>
             Actual Reps:{" "}
             <input
@@ -169,4 +170,18 @@ export default function Workout() {
       </div>
     </div>
   );
+}
+
+Workout.propTypes = {
+  workout: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    exercises: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        sets: PropTypes.number.isRequired,
+        reps: PropTypes.number.isRequired,
+        weights: PropTypes.arrayOf(PropTypes.number),
+      })
+    )
+  })
 }

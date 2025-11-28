@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import "./Planning.css";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import PropTypes from "prop-types";
 
 export default function History() {
-  const [history, setHistory] = useState([]);
-  const [sortField, setSortField] = useState(null); // "exercise" or "date"
-  const [sortAscending, setSortAscending] = useState(true);
+  const [history, setHistory] = useLocalStorage("history", [])
+  const [sortField, setSortField] = useState(null) // "exercise" or "date"
+  const [sortAscending, setSortAscending] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
-    const saved = localStorage.getItem("history");
-    if (saved) setHistory(JSON.parse(saved));
+    const saved = localStorage.getItem("history")
+    if (saved) setHistory(JSON.parse(saved))
   }, []);
 
   const handleSort = (field) => {
     if (sortField === field) {
-      setSortAscending(!sortAscending);
+      setSortAscending(!sortAscending)
     } else {
       setSortField(field);
       setSortAscending(true);
@@ -64,6 +67,7 @@ export default function History() {
   };
 
   const exercisesList = getExercisesList();
+  const filteredExerciseList = exercisesList.filter((ex) => ex.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div
@@ -72,6 +76,23 @@ export default function History() {
         height: "calc(100vh - 60px)",
       }}
     >
+      <div
+        style={{marginBottom: "10px", padding: "0 8px" }}>
+          <input
+            type="text"
+            placeholder="Search exercises or workouts"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "8px",
+              fontSize: "1rem",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+            }} />
+      </div>
+
+
       <div
         style={{
           display: "grid",
@@ -113,7 +134,7 @@ export default function History() {
         ))}
 
         {/* Data rows */}
-        {exercisesList.map((ex, rowIdx) => (
+        {filteredExerciseList.map((ex, rowIdx) => (
           <>
             <div
               key={`${rowIdx}-name`}
@@ -177,4 +198,9 @@ export default function History() {
       </div>
     </div>
   )    
+}
+
+History.propTypes = {
+  history: PropTypes.array,
+  setHistory: PropTypes.func,
 }

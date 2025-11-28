@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Planning.css";
+import PropTypes from "prop-types";
 
 export default function Planning() {
   const [workouts, setWorkouts] = useState([]);
@@ -395,4 +396,9 @@ export default function Planning() {
       )}
     </div>
   );
+}
+
+Planning.propTypes = {
+  workouts: PropTypes.array,
+  setWorkouts: PropTypes.func,
 }

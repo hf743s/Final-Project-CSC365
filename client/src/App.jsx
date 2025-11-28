@@ -4,10 +4,15 @@ import Landing from "./Pages/Landing";
 import Planning from "./Pages/Planning";
 import Workout from "./Pages/Workout";
 import History from "./Pages/History";
+import NotFound from "./Pages/NotFound";
+import ExerciseLibrary from "./Pages/ExerciseLibrary";
 import "./index.css";
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [workouts, setWorkouts] = useState([])
+  const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState(null)
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -30,7 +35,17 @@ export default function App() {
             <Route path="/planning" element={<Planning />} />
             <Route path="/workout" element={<Workout />} />
             <Route path="/history" element={<History />} />
-            <Route path="*" element={<h1>404 Not Found</h1>} />
+            <Route path="*" element={<NotFound />} />
+            <Route
+              path="/exercises"
+              element={
+              <ExerciseLibrary
+                workouts={workouts}
+                setWorkouts={setWorkouts}
+                selectedWorkoutIndex={selectedWorkoutIndex}
+              />
+              }
+            />
           </Routes>
         </div>
       </div>
