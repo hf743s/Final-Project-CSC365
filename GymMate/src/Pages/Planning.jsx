@@ -238,7 +238,8 @@ export default function Planning() {
             >{w.name}</span>
           
             {/*EDIT BUTTON - Workouts*/}
-            <button onClick={() => handleEditWorkout(idx)}>✏️</button>
+            <button className="icon-btn edit-btn" onClick={() => handleEditWorkout(idx)}>✏️</button>
+
 
           </div>
         ))}

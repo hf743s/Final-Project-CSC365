@@ -1,73 +1,58 @@
-.workout-names-list ul {
-  list-style: none;
-  padding: 0;
-}
-
-.workout-name {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #f2f2f2;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  color: purple;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-.workout-name:hover {
-  background-color: #e0c3ff;
-}
-
-.back-btn {
-  margin-bottom: 15px;
-  padding: 5px 10px;
-  cursor: pointer;
-  border: 1px solid purple;
-  background: white;
-  color: purple;
-  border-radius: 5px;
-}
-.page-inner {
+.history-container {
   padding: 20px;
   color: purple;
   font-family: sans-serif;
+  overflow-y: auto;
+  height: calc(100vh - 60px);
 }
 
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.search-container {
+  margin: 5px 0 10px 0;
 }
 
-.history-entry {
-  border: 1px solid purple;
-  border-radius: 5px;
-  padding: 10px;
-  background: #f9f9ff;
-}
-
-.history-entry h3 {
-  margin: 0 0 5px 0;
-}
-
-.history-entry p {
-  margin: 0 0 10px 0;
-  font-size: 0.9rem;
-}
-
-.history-table {
+.search-input {
   width: 100%;
-  border-collapse: collapse;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: 2.5fr 2.5fr 1.2fr 1.2fr 1.5fr 1.5fr 1.5fr;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.history-header {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 4px 6px;
+  font-weight: bold;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  line-height: 1.2;
 }
 
-.history-table th,
-.history-table td {
-  border: 1px solid purple;
-  padding: 5px;
-  font-size: 0.9rem;
-}
-
-.history-table th {
+.history-header.sortable {
   background: #e0c3ff;
+  cursor: pointer;
+}
+
+.history-cell {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

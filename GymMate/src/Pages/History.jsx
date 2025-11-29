@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import "./Planning.css";
+import "./history.css";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import PropTypes from "prop-types";
 
 export default function History() {
-  const [history, setHistory] = useLocalStorage("history", [])
-  const [sortField, setSortField] = useState(null) // "exercise" or "date"
-  const [sortAscending, setSortAscending] = useState(true)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [history, setHistory] = useLocalStorage("history", []);
+  const [sortField, setSortField] = useState(null);
+  const [sortAscending, setSortAscending] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem("history")
-    if (saved) setHistory(JSON.parse(saved))
+    const saved = localStorage.getItem("history");
+    if (saved) setHistory(JSON.parse(saved));
   }, []);
 
   const handleSort = (field) => {
     if (sortField === field) {
-      setSortAscending(!sortAscending)
+      setSortAscending(!sortAscending);
     } else {
       setSortField(field);
       setSortAscending(true);
@@ -49,7 +49,6 @@ export default function History() {
       })
     );
 
-    // Sorting
     if (sortField === "exercise") {
       exercisesList.sort((a, b) =>
         sortAscending
@@ -67,42 +66,24 @@ export default function History() {
   };
 
   const exercisesList = getExercisesList();
-  const filteredExerciseList = exercisesList.filter((ex) => ex.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredExerciseList = exercisesList.filter((ex) =>
+    ex.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div
-      style={{
-        overflowY: "auto",
-        height: "calc(100vh - 60px)",
-      }}
-    >
-      <div
-        style={{marginBottom: "10px", padding: "0 8px" }}>
-          <input
-            type="text"
-            placeholder="Search exercises or workouts"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              fontSize: "1rem",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }} />
+    <div className="history-container">
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search exercises or workouts"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
       </div>
 
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 2fr 1fr 1fr 1fr 1fr 1fr",
-          borderTop: "1px solid black",
-          borderLeft: "1px solid black",
-        }}
-      >
-        {/* Headers */}
-        {[
+      <div className="history-grid">
+        {[ 
           { title: "Exercise", field: "exercise" },
           { title: "Date", field: "date" },
           { title: "Sets" },
@@ -113,94 +94,33 @@ export default function History() {
         ].map((header, idx) => (
           <div
             key={idx}
+            className={`history-header ${header.field ? "sortable" : ""}`}
             onClick={header.field ? () => handleSort(header.field) : undefined}
-            style={{
-              borderRight: "1px solid black",
-              borderBottom: "1px solid black",
-              padding: "8px",
-              fontWeight: "bold",
-              background: header.field ? "#e0c3ff" : "#f9f9f9",
-              color: "purple",
-              textAlign: "center",
-              cursor: header.field ? "pointer" : "default",
-              userSelect: "none",
-            }}
           >
             {header.title}
             {header.field && sortField === header.field && (
-              <span style={{ marginLeft: 4 }}>{sortAscending ? "▲" : "▼"}</span>
+              <span>{sortAscending ? "▲" : "▼"}</span>
             )}
           </div>
         ))}
 
-        {/* Data rows */}
         {filteredExerciseList.map((ex, rowIdx) => (
           <>
-            <div
-              key={`${rowIdx}-name`}
-              style={{
-                borderRight: "1px solid black",
-                borderBottom: "1px solid black",
-                padding: "8px",
-                textAlign: "center",
-              }}
-            >
-              {ex.name}
-            </div>
-            <div
-              key={`${rowIdx}-date`}
-              style={{
-                borderRight: "1px solid black",
-                borderBottom: "1px solid black",
-                padding: "8px",
-                textAlign: "center",
-              }}
-            >
-              {ex.dateString}
-            </div>
-            <div
-              key={`${rowIdx}-sets`}
-              style={{
-                borderRight: "1px solid black",
-                borderBottom: "1px solid black",
-                padding: "8px",
-                textAlign: "center",
-              }}
-            >
-              {ex.sets}
-            </div>
-            <div
-              key={`${rowIdx}-reps`}
-              style={{
-                borderRight: "1px solid black",
-                borderBottom: "1px solid black",
-                padding: "8px",
-                textAlign: "center",
-              }}
-            >
-              {ex.reps}
-            </div>
+            <div key={`${rowIdx}-name`} className="history-cell">{ex.name}</div>
+            <div key={`${rowIdx}-date`} className="history-cell">{ex.dateString}</div>
+            <div key={`${rowIdx}-sets`} className="history-cell">{ex.sets}</div>
+            <div key={`${rowIdx}-reps`} className="history-cell">{ex.reps}</div>
             {ex.actualWeights.map((w, wIdx) => (
-              <div
-                key={`${rowIdx}-weight-${wIdx}`}
-                style={{
-                  borderRight: wIdx < 2 ? "1px solid black" : "none",
-                  borderBottom: "1px solid black",
-                  padding: "8px",
-                  textAlign: "center",
-                }}
-              >
-                {w}
-              </div>
+              <div key={`${rowIdx}-weight-${wIdx}`} className="history-cell">{w}</div>
             ))}
           </>
         ))}
       </div>
     </div>
-  )    
+  );
 }
 
 History.propTypes = {
   history: PropTypes.array,
   setHistory: PropTypes.func,
-}
+};

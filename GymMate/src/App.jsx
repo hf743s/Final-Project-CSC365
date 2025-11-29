@@ -73,7 +73,6 @@ function SideMenu({ menuOpen, toggleMenu }) {
         <>
           <Link to="/" onClick={toggleMenu}>Landing</Link>
           <Link to="/planning" onClick={toggleMenu}>Planning</Link>
-          <Link to="/workout" onClick={toggleMenu}>Workout</Link>
           <Link to="/history" onClick={toggleMenu}>History</Link>
         </>
       )}
