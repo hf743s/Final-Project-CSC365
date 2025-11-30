@@ -197,9 +197,7 @@ export default function Planning() {
     <div className="planning-container-bordered">
       {/* Start Button */}
       {selectedWorkout && selectedWorkout.exercises.length > 0 && (
-        <button className="start-workout-btn" onClick={handleStartWorkout}>
-          Start Workout
-        </button>
+        <button className="start-workout-btn" onClick={handleStartWorkout}>Start Workout</button>
       )}
 
       {/* Workouts Column */}

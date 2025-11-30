@@ -71,7 +71,7 @@ function SideMenu({ menuOpen, toggleMenu }) {
     <div className={`side-menu ${menuOpen ? "open" : ""}`}>
       {menuOpen && (
         <>
-          <Link to="/" onClick={toggleMenu}>Landing</Link>
+          <Link to="/" onClick={toggleMenu}>Home</Link>
           <Link to="/planning" onClick={toggleMenu}>Planning</Link>
           <Link to="/history" onClick={toggleMenu}>History</Link>
         </>

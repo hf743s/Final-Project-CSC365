@@ -5,12 +5,17 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
-
+.start-workout-btn {
+  background-color: #5c0e8c;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
 .column {
   flex: 1;
   display: flex;
   flex-direction: column;
   border-right: 1px solid black;
+  background-color: #f2e6f7;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .column:last-child {
@@ -21,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f9f9f9;
+  background: #e4b8fb;
   color: purple;
   font-weight: bold;
   padding: 5px;
@@ -60,7 +65,7 @@
 .workout-item {
   padding: 8px;
   border-bottom: 1px solid black;
-  color: purple;
+  color: rgb(98, 0, 128);
   min-height: 40px;
   display: flex;
   justify-content: center;
@@ -115,10 +120,10 @@
 }
 
 .workout-item.selected {
-  background-color: #800080;
+  background-color: #570080;
   color: white;
   font-weight: bold;
-  border: 1px solid purple;
+  border: 1px solid rgb(98, 0, 128);
 }
 
 .popup-overlay {
@@ -146,11 +151,11 @@
 
 .popup label {
   font-weight: bold;
-  color: purple;
+  color: rgb(98, 0, 128);
 }
 
 .popup input {
   padding: 5px;
   border: 1px solid black;
-  color: purple;
+  color: rgb(92, 2, 134);
 }

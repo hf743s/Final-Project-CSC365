@@ -8,6 +8,7 @@
 
 .search-container {
   margin: 5px 0 10px 0;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .search-input {
@@ -16,6 +17,7 @@
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .history-grid {
@@ -23,6 +25,8 @@
   grid-template-columns: 2.5fr 2.5fr 1.2fr 1.2fr 1.5fr 1.5fr 1.5fr;
   border-top: 1px solid black;
   border-left: 1px solid black;
+  background-color: #f5eefc;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .history-header {
@@ -30,12 +34,13 @@
   border-bottom: 1px solid black;
   padding: 4px 6px;
   font-weight: bold;
-  background: #f9f9f9;
+  background: #cc9ef0;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   line-height: 1.2;
+  font-weight: 600;
 }
 
 .history-header.sortable {

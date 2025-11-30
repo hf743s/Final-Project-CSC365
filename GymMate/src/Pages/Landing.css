@@ -1,0 +1,146 @@
+.landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    color: #222;
+    font-family: "Inter", sans-serif;
+}
+
+/* HEADER SECTION */
+.header {
+    width: 100%;
+    padding: 130px 20px;
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+    background: linear-gradient(135deg, #b661e0, #460055);
+    background-size: 200% 200%;
+    animation: gradientMove 10s ease infinite;
+    color: rgb(250, 243, 253);
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%;}
+    50% { background-position: 100% 50%;}
+    100% { background-position: 0% 50%;}
+}
+
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.header p {
+    font-size: 1.2rem;
+    margin-bottom: 35px;
+    opacity: 0.9;
+}
+
+/* CTA BUTTON */
+.cta {
+    background: rgb(175, 172, 172);
+    color: #9c89de;
+    padding: 14px 34px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.15rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+/* FEATURES SECTION */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 80px 20px;
+    max-width: 1100px;
+    width: 100%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    transform: translateY(-4px);
+    transition: 0.25s ease;
+}
+
+.feature {
+    background: #c5c4c5;
+    border-radius: 18px;
+    padding: 30px;
+    width: 260px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(74, 18, 100, 0.1);
+}
+
+.feature:hover {
+    transform: translateY(-4px);
+    transition: 0.25s ease;
+}
+
+.icon {
+    font-size: 46px;
+    color: #420166;
+    margin-bottom: 14px;
+}
+
+.feature h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+/* HOW IT WORKS SECTION */
+.how {
+    width: 100%;
+    padding: 90px 20px 130px;
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.how h2 {
+    font-size: 2.2rem;
+    margin-bottom: 45px;
+    color: #5f0486;
+}
+
+.steps {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.step {
+    background: #c5c4c5;
+    padding: 30px;
+    border-radius: 16px;
+    width: 240px;
+    box-shadow: 0 6px 14px rgba(74, 18, 100, 0.1);
+}
+
+.step:hover {
+    transform: translateY(-4px);
+    transition: 0.25s ease;
+}
+
+/* Number circles */
+.number {
+    display: inline-block;
+    background: rgb(78, 5, 96);
+    color: #d48bff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
