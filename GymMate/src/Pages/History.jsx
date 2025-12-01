@@ -75,7 +75,7 @@ export default function History() {
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search exercises or workouts"
+          placeholder="🔍Search exercises or workouts"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"

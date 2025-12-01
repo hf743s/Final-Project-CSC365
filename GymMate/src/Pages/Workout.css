@@ -11,8 +11,13 @@
 /* Timer */
 .timer {
   font-size: 2rem;
+  font-weight: bold;
   margin: 10px 0;
   font-family: monospace;
+  padding: 15px 25px;
+  border: 2px solid;
+  border-radius: 12px;
+  display: inline-block;
 }
 
 /* Exercise Info */

@@ -8,8 +8,12 @@ export default function Landing() {
     <div className="landing-content">
       {/*HEADER*/}
       <section className="header">
-        <h1>Plan. Track. Become Stronger.</h1>
-        <p>Your personalized workout planner to keep you consistent!</p>
+        <div className="wrapper">
+          <div className="box">
+            <h1>Plan. Track. Become Stronger.</h1>
+            <p>Your personalized workout planner to keep you consistent!</p>
+          </div>
+        </div>
       </section>
 
       {/*FEATURES*/}
@@ -45,12 +49,12 @@ export default function Landing() {
 
           <div className="step">
             <span className="number">2</span>
-            <p>Build a weekly routine.</p>
+            <p>Start the workout and log as you go.</p>
           </div>
 
           <div className="step">
             <span className="number">3</span>
-            <p>Track your progress and stay on target.</p>
+            <p>End the workout and your progress is saved!</p>
           </div>
         </div>
       </section>
